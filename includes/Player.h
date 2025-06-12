@@ -8,6 +8,7 @@ struct Player {
 public:
 	static int expPoints;
 
+	// Adds the experience reward from the active mission at MissionIndex to player's exp.
 	static void UpdatePlayerExp(int MissionIndex);
 };
 

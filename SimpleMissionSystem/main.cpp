@@ -4,20 +4,19 @@
 #include "../includes/Mission.h"
 #include "../includes/Player.h"
 #include "../includes/utilities.h"
+#include "../includes/Helpers.h"
 
 int main() {
 	for (const auto& m : MissionsManager::AllMissions) {
-		MissionsManager::AvailableMissions.push_back(m); // Mission verrà convertito in std::optional<Mission>
+		MissionsManager::AvailableMissions.push_back(m); // add all the missions in the available ones
 	}
 
 	int option;
+	int missionIndex{}; // initialize to zero
 
-	bool UserWantsToExit;
-	int missionIndex{};
-
+	bool UserWantsToExit = false;
+	
 	do {
-		UserWantsToExit = false;
-
 		std::cout << "--- Missions Menu --- \n";
 		std::cout << "1. Start a mission; \n";
 		std::cout << "2. Show active missions' status; \n";
@@ -25,7 +24,8 @@ int main() {
 		std::cout << "4. Simulate missions completion; \n";
 		std::cout << "5. Show completed missions; \n";
 		std::cout << "6. Show current exp; \n";
-		std::cout << "7. Quit \n";
+		std::cout << "7. Show project's info & credits \n";
+		std::cout << "8. Quit \n";
 		std::cout << '\n';
 
 		if (!getValidInput("> ", option)) {
@@ -41,8 +41,7 @@ int main() {
 					MissionsManager::DisplayAvailableMissions();
 				}
 				catch (const std::invalid_argument& e) {
-					std::cout << e.what();
-					std::cout << "\n\n";
+					printErrorMessage(e);
 					continue;
 				}
 
@@ -57,7 +56,6 @@ int main() {
 				}
 				catch (const std::invalid_argument& e) {
 					printErrorMessage(e);
-					std::cout << "\n\n";
 					continue;
 				}
 
@@ -72,7 +70,6 @@ int main() {
 				}
 				catch (const std::invalid_argument& e) {
 					printErrorMessage(e);
-					std::cout << "\n\n";
 					continue;
 				}
 
@@ -85,7 +82,6 @@ int main() {
 				}
 				catch (const std::invalid_argument& e) {
 					printErrorMessage(e);
-					std::cout << "\n\n";
 					continue;
 				}
 
@@ -100,7 +96,6 @@ int main() {
 				}
 				catch (const std::exception& e) {
 					printErrorMessage(e);
-					std::cout << "\n\n";
 					continue;
 				}
 
@@ -115,13 +110,12 @@ int main() {
 				}
 				catch (const std::invalid_argument& e) {
 					printErrorMessage(e);
-					std::cout << "\n\n";
 					continue;
 				}
 
 				std::cout << "Missions updated! \n\n";
 
-				MissionsManager::CheckForCompletedMissions();
+				MissionsManager::EvaluateMissions();
 
 				break;
 			}
@@ -132,7 +126,6 @@ int main() {
 				}
 				catch (const std::invalid_argument& e) {
 					printErrorMessage(e);
-					std::cout << "\n\n";
 				}
 
 				break;
@@ -144,6 +137,13 @@ int main() {
 			}
 			case 7:
 			{
+				printProjectInfo();
+				printCredits();
+
+				break;
+			}
+			case 8:
+			{
 				UserWantsToExit = true;
 				break;
 			}
@@ -154,7 +154,7 @@ int main() {
 			}
 		}
 
-		ClearAndIgnore();
+		ClearAndIgnore(); // clear the input buffer to ensure no remaining characters interfere with subsequent input
 
 	} while (!UserWantsToExit);
 

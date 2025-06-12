@@ -4,6 +4,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mission.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="utilities.cpp" />
+    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="Helpers.cpp" />
   </ItemGroup>
 </Project>

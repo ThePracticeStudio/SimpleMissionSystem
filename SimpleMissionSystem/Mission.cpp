@@ -35,51 +35,59 @@ std::vector<Mission>MissionsManager::AllMissions = {
 		{"Defeat boss", 0, 100, 500}
 };
 
+const int MissionsManager::allMissionsSize = MissionsManager::AllMissions.size();
+
 std::vector<std::optional<Mission>>MissionsManager::AvailableMissions;
 
-std::vector<std::optional<Mission>>MissionsManager::ActiveMissions(AllMissions.size());
+std::vector<std::optional<Mission>>MissionsManager::ActiveMissions(allMissionsSize);
 
-std::vector<std::optional<Mission>>MissionsManager::CompletedMissions(AllMissions.size());
+std::vector<std::optional<Mission>>MissionsManager::CompletedMissions(allMissionsSize);
 
-void MissionsManager::AcceptMission(int MissionIndex) {
-	if (MissionIndex >= 0 && MissionIndex < AllMissions.size()) { // if it's a possibly valid index (in range)
-		if (!AvailableMissions[MissionIndex].has_value()) { // if it's not available
-			if (ActiveMissions[MissionIndex].has_value()) { // if it's active
-				throw(std::invalid_argument("Error: Mission #" + std::to_string(MissionIndex) + " is already active!"));
+// Activates the available mission at MissionIndex
+void MissionsManager::AcceptMission(int missionIndex) {
+	if (missionIndex >= 0 && missionIndex < allMissionsSize) { // if it's a possibly valid index (in range)
+		if (!AvailableMissions[missionIndex].has_value()) { // if it's not available
+			if (ActiveMissions[missionIndex].has_value()) { // if it's active
+				throw(std::invalid_argument("Error: Mission #" + std::to_string(missionIndex) + " is already active!"));
 			}
 
-			throw(std::invalid_argument("Error: Mission #" + std::to_string(MissionIndex) + " is completed!")); // else, it's completed
+			throw(std::invalid_argument("Error: Mission #" + std::to_string(missionIndex) + " is completed!")); // else, it's completed
 		}
 
-		ActiveMissions[MissionIndex] = AvailableMissions[MissionIndex];
-		AvailableMissions[MissionIndex] = std::nullopt;
+		ActiveMissions[missionIndex] = AvailableMissions[missionIndex];
+		AvailableMissions[missionIndex] = std::nullopt;
 
 		return;
 	}
 	
 	throw(std::invalid_argument("Index out of range: invalid mission!"));
 }
-void MissionsManager::UpdateMission(int MissionIndex) {
-	++ActiveMissions[MissionIndex]->userPoints;
-}
-void MissionsManager::CompleteMission(int MissionIndex) {
-	CompletedMissions[MissionIndex] = ActiveMissions[MissionIndex];
-	ActiveMissions[MissionIndex] = std::nullopt;
+
+// Updates the active mission at missionIndex
+void MissionsManager::UpdateMission(int missionIndex) {
+	++ActiveMissions[missionIndex]->userPoints;
 }
 
-void MissionsManager::FailMission(int MissionIndex) {
-	if (MissionIndex >= 0 && MissionIndex < AllMissions.size()) { // if it's a possibly valid index (in range)
-		if (!ActiveMissions[MissionIndex].has_value()) { // if it's not active
-			if (AvailableMissions[MissionIndex].has_value()) { // if it's available
-				throw(std::invalid_argument("Error: Mission #" + std::to_string(MissionIndex) + " is not active!"));
+// Completes the active mission at missionIndex
+void MissionsManager::MarkMissionAsCompleted(int missionIndex) {
+	CompletedMissions[missionIndex] = ActiveMissions[missionIndex];
+	ActiveMissions[missionIndex] = std::nullopt;
+}
+
+// Gives up the active mission at missionIndex
+void MissionsManager::FailMission(int missionIndex) {
+	if (missionIndex >= 0 && missionIndex < allMissionsSize) { // if it's a possibly valid index (in range)
+		if (!ActiveMissions[missionIndex].has_value()) { // if it's not active
+			if (AvailableMissions[missionIndex].has_value()) { // if it's available
+				throw(std::invalid_argument("Error: Mission #" + std::to_string(missionIndex) + " is not active!"));
 			}
 
-			throw(std::invalid_argument("Error: Mission #" + std::to_string(MissionIndex) + " is completed!")); // else, it's completed
+			throw(std::invalid_argument("Error: Mission #" + std::to_string(missionIndex) + " is completed!")); // else, it's completed
 		}
 
-		ActiveMissions[MissionIndex]->userPoints = 0; // reset user points
-		AvailableMissions[MissionIndex] = ActiveMissions[MissionIndex];
-		ActiveMissions[MissionIndex] = std::nullopt;
+		ActiveMissions[missionIndex]->userPoints = 0; // reset user points
+		AvailableMissions[missionIndex] = ActiveMissions[missionIndex];
+		ActiveMissions[missionIndex] = std::nullopt;
 
 		return;
 	}
@@ -87,6 +95,7 @@ void MissionsManager::FailMission(int MissionIndex) {
 	throw(std::invalid_argument("Index out of range: invalid mission!"));
 }
 
+// Prints the available missions
 void MissionsManager::DisplayAvailableMissions() {
 	bool isAllEmpty = true;
 
@@ -103,7 +112,7 @@ void MissionsManager::DisplayAvailableMissions() {
 
 	std::cout << "Available missions list: \n\n";
 
-	for (int i = 0; i < AllMissions.size(); ++i) {
+	for (int i = 0; i < allMissionsSize; ++i) {
 		if (AvailableMissions[i].has_value()) {
 			std::cout << "Mission #" << i << '\n';
 			AvailableMissions[i]->DisplayInfo();
@@ -112,6 +121,7 @@ void MissionsManager::DisplayAvailableMissions() {
 	}
 }
 
+// Prints the active missions
 void MissionsManager::DisplayActiveMissionsStatus() {
 	bool isAllEmpty = true;
 
@@ -128,7 +138,7 @@ void MissionsManager::DisplayActiveMissionsStatus() {
 
 	std::cout << "Active missions list: \n\n";
 
-	for (int i = 0; i < AllMissions.size(); ++i) {
+	for (int i = 0; i < allMissionsSize; ++i) {
 		if (ActiveMissions[i].has_value()) {
 			std::cout << "Mission #" << i << '\n';
 			ActiveMissions[i]->DisplayInfoWithStatus();
@@ -137,6 +147,7 @@ void MissionsManager::DisplayActiveMissionsStatus() {
 	}
 }
 
+// Prints the Completed missions
 void MissionsManager::DisplayCompletedMissions() {
 	bool isAllEmpty = true;
 
@@ -153,7 +164,7 @@ void MissionsManager::DisplayCompletedMissions() {
 	
 	std::cout << "Completed missions list: \n\n";
 
-	for (int i = 0; i < CompletedMissions.size(); ++i) {
+	for (int i = 0; i < allMissionsSize; ++i) {
 		if (CompletedMissions[i].has_value()) {
 			std::cout << "Mission #" << i << '\n';
 			CompletedMissions[i]->DisplayInfo();
@@ -161,6 +172,8 @@ void MissionsManager::DisplayCompletedMissions() {
 		}
 	}
 }
+
+// Simulates all the active missions' completion
 void MissionsManager::SimulateMissionsCompletion() {
 	bool isAllEmpty = true;
 
@@ -175,21 +188,22 @@ void MissionsManager::SimulateMissionsCompletion() {
 		throw(std::invalid_argument("No active missions yet!"));
 	}
 
-	for (int i = 0; i < ActiveMissions.size(); ++i) {
+	for (int i = 0; i < allMissionsSize; ++i) {
 		if (ActiveMissions[i].has_value()) {
 			UpdateMission(i);
 		}
 	}
 }
 
-void MissionsManager::CheckForCompletedMissions() {
-	for (int i = 0; i < ActiveMissions.size(); ++i) {
+// Checks if there are completed active missions
+void MissionsManager::EvaluateMissions() {
+	for (int i = 0; i < allMissionsSize; ++i) {
 		if (ActiveMissions[i].has_value()) {
 			if (ActiveMissions[i]->userPoints == ActiveMissions[i]->goalPoints) {
 				std::cout << "Mission \"" << ActiveMissions[i]->name << "\" completed! \n";
-				std::cout << "Reward: " << ActiveMissions[i]->expReward << " exp \n\n";
+				std::cout << "Reward: +" << ActiveMissions[i]->expReward << " exp \n\n";
 				Player::UpdatePlayerExp(i); // update player's exp before deleting the mission (handed by CompleteMission method)
-				CompleteMission(i);
+				MarkMissionAsCompleted(i);
 			}
 		}
 	}
