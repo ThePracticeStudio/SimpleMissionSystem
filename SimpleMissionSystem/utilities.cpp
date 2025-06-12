@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../includes/utilities.h"
+#include "../includes/Utilities.h"
 
 // Get a variable and let the user read it. Returns true if input is valid, false if not
 bool getValidInput(const std::string& prompt, int& n) {

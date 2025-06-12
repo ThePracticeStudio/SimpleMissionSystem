@@ -3,7 +3,7 @@
 
 #include <exception>
 
-#include "Mission.h"
+#include "Mission.hpp"
 
 // Get a variable and let the user read it. Returns true if input is valid, false if not
 bool getValidInput(const std::string& prompt, int& n);

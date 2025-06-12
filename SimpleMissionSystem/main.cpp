@@ -1,18 +1,18 @@
 #include <iostream>
 #include <limits>
 
-#include "../includes/Mission.h"
+#include "../includes/Mission.hpp"
 #include "../includes/Player.h"
-#include "../includes/utilities.h"
+#include "../includes/Utilities.h"
 #include "../includes/Helpers.h"
 
 int main() {
 	for (const auto& m : MissionsManager::AllMissions) {
-		MissionsManager::AvailableMissions.push_back(m); // add all the missions in the available ones
+		MissionsManager::AvailableMissions.push_back(m); // Add all the missions in the available ones
 	}
 
 	int option;
-	int missionIndex{}; // initialize to zero
+	int missionIndex{}; // Initialize to zero
 
 	bool UserWantsToExit = false;
 	

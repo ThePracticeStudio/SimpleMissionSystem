@@ -2,8 +2,8 @@
 #include <exception>
 #include <algorithm>
 
-#include "../includes/Mission.h"
-#include "../includes/utilities.h"
+#include "../includes/Mission.hpp"
+#include "../includes/Utilities.h"
 
 std::string name;
 

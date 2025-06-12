@@ -22,7 +22,7 @@ void printProjectInfo() {
 	std::cout << '\n';
 }
 
-// Prints the list of developer names(credits)
+// Prints the list of developer names (credits)
 void printCredits() {
 	std::cout << "Credits: \n";
 	for (const auto& devName : devNames)

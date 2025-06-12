@@ -1,5 +1,5 @@
 #include "../includes/Player.h"
-#include "../includes/Mission.h"
+#include "../includes/Mission.hpp"
 
 int Player::expPoints = 0; // Initialize player's exp to 0
 
