@@ -8,7 +8,7 @@
 
 int main() {
 	for (const auto& m : MissionsManager::AllMissions) {
-		MissionsManager::AvailableMissions.push_back(m); // Add all the missions in the available ones
+		MissionsManager::AvailableMissions.emplace_back(m); // Add all the missions in the available ones
 	}
 
 	int option;
