@@ -1,5 +1,4 @@
 #include <iostream>
-#include <exception>
 #include <algorithm>
 
 #include "../includes/Mission.hpp"
@@ -10,6 +9,17 @@ std::string name;
 int userPoints;
 int goalPoints;
 int expReward;
+
+// Getters functions
+std::string Mission::getName() const { return name; }
+int Mission::getUserPoints() const { return userPoints; }
+int Mission::getGoalPoints() const { return goalPoints; }
+int Mission::getExpReward() const { return expReward; }
+
+// Setters functions
+void Mission::setUserPoints(int n) {
+	userPoints = n;
+}
 
 Mission::Mission(std::string Name, int UserPoints, int GoalPoints, int ExpReward) {
 	name = Name;
@@ -65,7 +75,9 @@ void MissionsManager::AcceptMission(int missionIndex) {
 
 // Updates the active mission at missionIndex
 void MissionsManager::UpdateMission(int missionIndex) {
-	++ActiveMissions[missionIndex]->userPoints;
+
+	// increment user points by 1
+	ActiveMissions[missionIndex]->setUserPoints(ActiveMissions[missionIndex]->getUserPoints() + 1);
 }
 
 // Completes the active mission at missionIndex
@@ -85,7 +97,7 @@ void MissionsManager::FailMission(int missionIndex) {
 			throw(std::invalid_argument("Error: Mission #" + std::to_string(missionIndex) + " is completed!")); // else, it's completed
 		}
 
-		ActiveMissions[missionIndex]->userPoints = 0; // reset user points
+		ActiveMissions[missionIndex]->setUserPoints(0); // reset user points
 		AvailableMissions[missionIndex] = ActiveMissions[missionIndex];
 		ActiveMissions[missionIndex] = std::nullopt;
 
@@ -199,9 +211,9 @@ void MissionsManager::SimulateMissionsCompletion() {
 void MissionsManager::EvaluateMissions() {
 	for (int i = 0; i < allMissionsSize; ++i) {
 		if (ActiveMissions[i].has_value()) {
-			if (ActiveMissions[i]->userPoints == ActiveMissions[i]->goalPoints) {
-				std::cout << "Mission \"" << ActiveMissions[i]->name << "\" completed! \n";
-				std::cout << "Reward: +" << ActiveMissions[i]->expReward << " exp \n\n";
+			if (ActiveMissions[i]->getUserPoints() == ActiveMissions[i]->getGoalPoints()) {
+				std::cout << "Mission \"" << ActiveMissions[i]->getName() << "\" completed! \n";
+				std::cout << "Reward: +" << ActiveMissions[i]->getExpReward() << " exp \n\n";
 				Player::UpdatePlayerExp(i); // update player's exp before deleting the mission (handed by CompleteMission method)
 				MarkMissionAsCompleted(i);
 			}

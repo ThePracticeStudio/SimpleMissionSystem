@@ -1,5 +1,5 @@
-#ifndef MISSION_H
-#define MISSION_H
+#ifndef MISSION_HPP
+#define MISSION_HPP
 
 #include <string>
 #include <vector>
@@ -8,12 +8,21 @@
 #include "../includes/Player.h"
 
 class Mission {
-public:
+private:
 	std::string name;
-
 	int userPoints;
 	int goalPoints;
 	int expReward;
+
+public:
+	// Getters functions
+	std::string getName() const;
+	int getUserPoints() const;
+	int getGoalPoints() const;
+	int getExpReward() const;
+
+	// Setters functions
+	void setUserPoints(int n);
 
 	Mission(std::string Name, int UserPoints, int GoalPoints, int ExpReward);
 
@@ -58,4 +67,4 @@ public:
 	static void EvaluateMissions();
 };
 
-#endif // MISSION_H
+#endif // MISSION_HPP

@@ -12,7 +12,7 @@ int main() {
 	}
 
 	int option;
-	int missionIndex{}; // Initialize to zero
+	int missionIndex{}; // initialize to zero
 
 	bool UserWantsToExit = false;
 	
@@ -154,7 +154,7 @@ int main() {
 			}
 		}
 
-		ClearAndIgnore(); // clear the input buffer to ensure no remaining characters interfere with subsequent input
+		ClearAndIgnore(); // Clear the input buffer to ensure no remaining characters interfere with subsequent input
 
 	} while (!UserWantsToExit);
 
